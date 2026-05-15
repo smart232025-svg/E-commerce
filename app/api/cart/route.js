@@ -44,7 +44,6 @@ export async function POST(request) {
       user: auth.userId,
     });
 
-    // CREATE CART
     if (!cart) {
       cart = await Cart.create({
         user: auth.userId,
@@ -52,7 +51,6 @@ export async function POST(request) {
       });
     }
 
-    // CHECK EXISTING PRODUCT
     const existingItem = cart.items.find(
       (item) => item.product.toString() === productId,
     );
@@ -63,8 +61,6 @@ export async function POST(request) {
         quantity: 1,
       });
     } else {
-      // لو المنتج موجود، زود الكمية
-      // existingItem.quantity += 1;
       return NextResponse.json({
         message: "Product already in cart",
         alreadyExists: true,
@@ -79,7 +75,6 @@ export async function POST(request) {
   }
 }
 
-// ✅ DELETE - Clear entire cart (أضف الدالة دي)
 export async function DELETE() {
   try {
     const auth = await getAuthFromCookies();
@@ -93,7 +88,7 @@ export async function DELETE() {
     const cart = await Cart.findOne({ user: auth.userId });
 
     if (cart) {
-      cart.items = []; // تفريغ السلة
+      cart.items = [];
       await cart.save();
     }
 
