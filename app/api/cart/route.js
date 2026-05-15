@@ -64,7 +64,11 @@ export async function POST(request) {
       });
     } else {
       // لو المنتج موجود، زود الكمية
-      existingItem.quantity += 1;
+      // existingItem.quantity += 1;
+      return NextResponse.json({
+        message: "Product already in cart",
+        alreadyExists: true,
+      });
     }
 
     await cart.save();

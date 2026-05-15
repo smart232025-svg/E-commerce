@@ -26,7 +26,10 @@ function ProductContent() {
     const { addToCart, isInCart } = useCart()
     const [addingToCart, setAddingToCart] = useState(false)
 
+    const productInCart = isInCart(product?._id); // متغير عشان نعرف المنتج في السلة ولا لأ
+
     const handleAddToCart = async () => {
+        if (productInCart) return;
         setAddingToCart(true)
         await addToCart(product)
         setAddingToCart(false)
@@ -199,7 +202,7 @@ function ProductContent() {
                                         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                                             <button
                                                 onClick={handleAddToCart}
-                                                disabled={addingToCart}
+                                                disabled={addingToCart || productInCart}
                                                 className={`
                                                     w-full sm:flex-1 flex items-center justify-center gap-2 sm:gap-3 
                                                     px-4 sm:px-6 py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg 
