@@ -1,0 +1,46 @@
+export async function POST(req) {
+  const body = await req.json();
+
+  const response = await fetch(
+    "https://app.fawaterk.com/api/v2/createInvoiceLink",
+    {
+      method: "POST",
+
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.FAWATERK_API_KEY}`,
+      },
+
+      body: JSON.stringify({
+        cartTotal: body.amount,
+
+        currency: "EGP",
+
+        customer: {
+          first_name: "Test",
+          last_name: "User",
+          email: "test@test.com",
+          phone: "01000000000",
+        },
+
+        redirectionUrls: {
+          successUrl: "http://localhost:3000/success",
+          failUrl: "http://localhost:3000/failed",
+          pendingUrl: "http://localhost:3000/pending",
+        },
+
+        cartItems: [
+          {
+            name: "Test Product",
+            price: body.amount,
+            quantity: 1,
+          },
+        ],
+      }),
+    },
+  );
+
+  const data = await response.json();
+
+  return Response.json(data);
+}
