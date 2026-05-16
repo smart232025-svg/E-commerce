@@ -6,7 +6,7 @@ import { CartProvider } from "@/context/CartContext"
 export const metadata = {
   title: "Elkhalil Tech",
   description:
-    "Discover premium electronics, smartphones, accessories, and the latest tech products at Shalaan Store with fast delivery and secure shopping experience."
+    "Discover premium electronics, smartphones, accessories, and the latest tech products with fast delivery and secure shopping experience."
   , icons: {
     icon: "/logo.png",
   },
