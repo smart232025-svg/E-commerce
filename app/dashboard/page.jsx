@@ -13,8 +13,6 @@ import {
     ShoppingBag,
     DollarSign,
     Loader2,
-    ArrowRight,
-    Clock,
     ArrowLeft,
 } from "lucide-react";
 
@@ -208,105 +206,6 @@ function DashboardContent() {
                     </Link>
 
                 </div>
-                {/* <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-                    <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-                        <div className="flex items-center gap-3">
-                            <Clock className="w-5 h-5 text-gray-400" />
-                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                                Recent Orders
-                            </h3>
-                        </div>
-                    </div>
-
-                    {stats?.recentOrders?.length > 0 ? (
-
-                        <div className="overflow-x-auto">
-
-                            <table className="w-full">
-
-                                <thead className="bg-gray-50 dark:bg-gray-700/50">
-
-                                    <tr>
-
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                                            Order ID
-                                        </th>
-
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                                            Customer
-                                        </th>
-
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                                            Total
-                                        </th>
-
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                                            Status
-                                        </th>
-
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                                            Date
-                                        </th>
-
-                                    </tr>
-                                </thead>
-
-                                <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-
-                                    {stats.recentOrders.map((order) => (
-
-                                        <tr
-                                            key={order._id}
-                                            className="hover:bg-gray-50 dark:hover:bg-gray-700/30"
-                                        >
-
-                                            <td className="px-6 py-4 font-mono text-sm text-gray-900 dark:text-white">
-                                                {order._id.slice(-8)}
-                                            </td>
-
-                                            <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">
-                                                {order.user?.name || "Unknown"}
-                                            </td>
-
-                                            <td className="px-6 py-4 text-sm font-medium text-gray-900 dark:text-white">
-                                                EGP{order.totalPrice?.toFixed(2) || "0.00"}
-                                            </td>
-
-                                            <td className="px-6 py-4">
-                                                <span
-                                                    className={`inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium ${order.status === "paid"
-                                                        ? "bg-green-100 text-green-800"
-                                                        : "bg-yellow-100 text-yellow-800"
-                                                        }`}
-                                                >
-                                                    {order.status}
-                                                </span>
-
-                                            </td>
-
-                                            <td className="px-6 py-4 text-sm text-gray-500">
-                                                {new Date(order.createdAt).toLocaleDateString()}
-                                            </td>
-
-                                        </tr>
-
-                                    ))}
-
-                                </tbody>
-
-                            </table>
-
-                        </div>
-
-                    ) : (
-
-                        <div className="p-8 text-center text-gray-500">
-                            No recent orders
-                        </div>
-
-                    )}
-
-                </div> */}
 
             </div>
 

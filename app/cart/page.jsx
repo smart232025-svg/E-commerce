@@ -12,7 +12,6 @@ export default function CartPage() {
     useCart();
   const router = useRouter();
 
-  // State للتحميل على الرقم (الكمية)
   const [loadingQuantity, setLoadingQuantity] = useState({});
 
   const setQuantityLoading = (productId, isLoading) => {
@@ -20,9 +19,9 @@ export default function CartPage() {
   };
 
   const handleIncrease = async (productId) => {
-    setQuantityLoading(productId, true); // شغل التحميل على الرقم
+    setQuantityLoading(productId, true);
     await increaseQuantity(productId);
-    setQuantityLoading(productId, false); // طفي التحميل
+    setQuantityLoading(productId, false);
   };
 
   const handleDecrease = async (productId) => {
@@ -97,7 +96,7 @@ export default function CartPage() {
                   >
                     <div className="flex flex-row gap-4 sm:gap-5">
                       {/* IMAGE */}
-                      <div className="relative w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 flex-shrink-0 rounded-xl overflow-hidden bg-gray-100">
+                      <div className="relative w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 shrink-0 rounded-xl overflow-hidden bg-gray-100">
                         <Image
                           src={item.product.imageUrl}
                           alt={item.product.title}
@@ -130,8 +129,7 @@ export default function CartPage() {
                               <Minus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                             </button>
 
-                            {/* الرقم اللي عليه التحميل */}
-                            <div className="min-w-[48px] text-center">
+                            <div className="min-w-12 text-center">
                               {loadingQuantity[item.product._id] ? (
                                 <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin text-indigo-600 mx-auto" />
                               ) : (

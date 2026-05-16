@@ -48,37 +48,81 @@ function OrdersContent() {
         }
     }, [isAuthenticated]);
 
+    // const getStatusBadge = (status) => {
+    //     const statusConfig = {
+    //         pending: {
+    //             color:
+    //                 "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400",
+    //             icon: Clock,
+    //             text: "قيد الانتظار",
+
+    //         },
+    //         paid: {
+    //             color:
+    //                 "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400",
+    //             icon: CheckCircle,
+    //         },
+    //         cancelled: {
+    //             color: "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400",
+    //             icon: XCircle,
+    //         },
+    //         processing: {
+    //             color:
+    //                 "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400",
+    //             icon: Package,
+    //         },
+    //     };
+
+    //     const config = statusConfig[status] || statusConfig.pending;
+    //     const Icon = config.icon;
+    //     return (
+    //         <span
+    //             className={`inline-flex items-center gap-1.5 px-3 py-1  rounded-full text-sm font-medium ${config.color}`}
+    //         >
+    //             <Icon className="w-4 h-4" />
+    //             {status.charAt(0).toUpperCase() + status.slice(1)}
+    //         </span>
+    //     );
+    // };
+
     const getStatusBadge = (status) => {
         const statusConfig = {
             pending: {
-                color:
-                    "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400",
+                color: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400",
                 icon: Clock,
+                text: "قيد الانتظار",
             },
-            paid: {
-                color:
-                    "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400",
+            confirmed: {
+                color: "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400",
                 icon: CheckCircle,
+                text: "تم التأكيد",
+            },
+            shipping: {
+                color: "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400",
+                icon: Package,
+                text: "جارٍ الشحن",
+            },
+            delivered: {
+                color: "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400",
+                icon: CheckCircle,
+                text: "تم التوصيل",
             },
             cancelled: {
                 color: "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400",
                 icon: XCircle,
-            },
-            processing: {
-                color:
-                    "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400",
-                icon: Package,
+                text: "ملغي",
             },
         };
 
         const config = statusConfig[status] || statusConfig.pending;
         const Icon = config.icon;
+
         return (
             <span
-                className={`inline-flex items-center gap-1.5 px-3 py-1  rounded-full text-sm font-medium ${config.color}`}
+                className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium ${config.color}`}
             >
                 <Icon className="w-4 h-4" />
-                {status.charAt(0).toUpperCase() + status.slice(1)}
+                {config.text}
             </span>
         );
     };

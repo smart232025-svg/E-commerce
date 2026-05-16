@@ -26,7 +26,7 @@ function ProductContent() {
     const { addToCart, isInCart } = useCart()
     const [addingToCart, setAddingToCart] = useState(false)
 
-    const productInCart = isInCart(product?._id); // متغير عشان نعرف المنتج في السلة ولا لأ
+    const productInCart = isInCart(product?._id);
 
     const handleAddToCart = async () => {
         if (productInCart) return;
@@ -87,7 +87,6 @@ function ProductContent() {
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-4 sm:py-8">
             <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-                {/* رجوع */}
                 <Link
                     href="/products"
                     className="inline-flex items-center gap-2 text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 mb-4 sm:mb-8 text-sm sm:text-base"
@@ -96,15 +95,11 @@ function ProductContent() {
                     العودة للمنتجات
                 </Link>
 
-                {/* كارد المنتج */}
                 <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden">
                     <div className="p-4 sm:p-6 md:p-8">
-                        {/* شبكة متجاوبة */}
                         <div className="flex flex-col lg:grid lg:grid-cols-2 gap-6 lg:gap-8">
 
-                            {/* قسم الصور - الجانب الأيمن */}
                             <div className="flex flex-col gap-3">
-                                {/* الصورة الرئيسية */}
                                 <div className="relative aspect-square bg-gray-100 dark:bg-gray-700 rounded-xl overflow-hidden">
                                     {selectedImage ? (
                                         <Image
@@ -122,7 +117,6 @@ function ProductContent() {
                                     )}
                                 </div>
 
-                                {/* الصور الإضافية - سكرول أفقي على الموبايل */}
                                 {(product.images?.length > 0 || product.imageUrl) && (
                                     <div className="relative">
                                         <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-thin">
@@ -132,7 +126,7 @@ function ProductContent() {
                                                     <button
                                                         key={index}
                                                         onClick={() => setSelectedImage(img)}
-                                                        className={`flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden border-2 transition ${selectedImage === img
+                                                        className={`shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden border-2 transition ${selectedImage === img
                                                             ? "border-indigo-600"
                                                             : "border-transparent"
                                                             }`}
@@ -147,7 +141,6 @@ function ProductContent() {
                                                     </button>
                                                 ))}
                                         </div>
-                                        {/* إشارة للسكرول على الموبايل */}
                                         <div className="block lg:hidden text-center text-xs text-gray-400 mt-1">
                                             ↜ اسحب للجانب لرؤية المزيد ↝
                                         </div>
@@ -155,14 +148,13 @@ function ProductContent() {
                                 )}
                             </div>
 
-                            {/* قسم التفاصيل - الجانب الأيسر */}
                             <div className="flex flex-col">
                                 <div className="flex-1">
                                     <span className="inline-block py-1 px-3 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
                                         {product.category}
                                     </span>
 
-                                    <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4 break-words">
+                                    <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4 wrap-break-word">
                                         {product.title}
                                     </h1>
 
@@ -170,7 +162,6 @@ function ProductContent() {
                                         {product.description}
                                     </p>
 
-                                    {/* حالة المخزون */}
                                     <div className="flex items-center gap-2 mb-4 sm:mb-6">
                                         {product.stock > 0 ? (
                                             <>
@@ -190,7 +181,6 @@ function ProductContent() {
                                     </div>
                                 </div>
 
-                                {/* السعر والأزرار */}
                                 <div className="border-t border-gray-200 dark:border-gray-700 pt-4 sm:pt-6 mt-2">
                                     <div className="mb-4 sm:mb-6">
                                         <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">

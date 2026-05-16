@@ -24,9 +24,6 @@ export async function POST(req) {
         },
 
         redirectionUrls: {
-          // successUrl: "http://localhost:3000/success",
-          // failUrl: "http://localhost:3000/failed",
-          // pendingUrl: "http://localhost:3000/pending",
           successUrl: "process.env.NEXT_PUBLIC_BASE_URL}/success",
           failUrl: "process.env.NEXT_PUBLIC_BASE_URL}/failed",
           pendingUrl: "process.env.NEXT_PUBLIC_BASE_URL}/pending",

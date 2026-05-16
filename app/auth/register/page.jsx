@@ -127,7 +127,7 @@ function RegisterForm() {
                             <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
 
                             <input
-                                type={showPassword ? "text" : "password"}   // ✅ هنا
+                                type={showPassword ? "text" : "password"}
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required

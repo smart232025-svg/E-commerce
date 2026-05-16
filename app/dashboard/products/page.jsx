@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react"
 import { useAuth } from "@/components/providers/AuthProvider"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { Package, Loader2, Plus, Pencil, Trash2, ArrowLeft, X, Save, Check, AlertCircle } from "lucide-react"
+import { Package, Loader2, Plus, Pencil, Trash2, ArrowLeft, X, Save, AlertCircle } from "lucide-react"
 import Image from "next/image"
 
 function ProductsContent() {
@@ -31,7 +31,6 @@ function ProductsContent() {
     const [deleteConfirm, setDeleteConfirm] = useState(null)
     const [uploading, setUploading] = useState(false)
     const [uploadingExtra, setUploadingExtra] = useState(false)
-    const [customCategory, setCustomCategory] = useState("")
     const [isCustomCategory, setIsCustomCategory] = useState(false)
     const fileInputRef = useRef(null)
 
@@ -163,7 +162,6 @@ function ProductsContent() {
         }
     }
 
-    // for image 
     const handleImageUpload = async (e) => {
         const file = e.target.files[0]
 
@@ -193,7 +191,6 @@ function ProductsContent() {
             setUploading(false)
         }
     }
-    // for extra images
     const handleExtraImagesUpload = async (e) => {
         const files = Array.from(e.target.files)
 
@@ -592,7 +589,6 @@ function ProductsContent() {
                                 )}
 
                             </div>
-                            {/* for extra images */}
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 dark:text-white mb-2">
                                     صور إضافية                                </label>

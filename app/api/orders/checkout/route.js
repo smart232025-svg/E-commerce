@@ -34,7 +34,6 @@ export async function POST(request) {
 
     const user = await User.findById(auth.userId);
 
-    // 🟢 Create Order (pending)
     const order = await Order.create({
       user: auth.userId,
       orderItems: [
@@ -50,7 +49,6 @@ export async function POST(request) {
       status: "pending",
     });
 
-    // 🟢 Create Fawaterk invoice
     const fawaterkRes = await fetch(
       "https://app.fawaterk.com/api/v2/createInvoiceLink",
       {
@@ -99,7 +97,6 @@ export async function POST(request) {
       );
     }
 
-    // 🟢 Save payment reference
     order.paymentProvider = "fawaterk";
     order.paymentRef =
       fawaterkData?.data?.invoiceId || fawaterkData?.data?.invoice_key;

@@ -5,7 +5,6 @@ import { useAuth } from "@/components/providers/AuthProvider";
 import ProductCard from "@/components/ui/ProductCard";
 import {
   ShoppingBag,
-  ArrowRight,
   Shield,
   Zap,
   Lock,
@@ -160,8 +159,7 @@ function HomeContent() {
                     </div>
 
                     <div className="text-xs text-slate-500 dark:text-slate-400">
-                      دفع بواسطة فواتيرك
-                    </div>
+                      طريقة دفع أمنة                    </div>
                   </div>
                 </div>
               </div>
@@ -182,7 +180,7 @@ function HomeContent() {
 
               لعملائنا. بوابة الدفع لدينا مدعومة من
 
-              فواتيرك وهي شركة رائدة في مجال الدفع الآمنة.
+              شركات رائدة في مجال الدفع الآمنة.
             </p>
           </div>
 
@@ -193,7 +191,7 @@ function HomeContent() {
                 icon: CreditCard,
                 title: "المدفوعات أمنة",
                 description:
-                  "نظام دفع مدعوم بتقنية Fawaterak مع تشفير وحماية من الإحتيال رائدة في هذا المجال.",
+                  "نظام دفع آمن  مع تشفير وحماية من الإحتيال رائدة في هذا المجال.",
                 iconBg: "bg-indigo-100 dark:bg-indigo-900/30",
                 iconColor: "text-indigo-600 dark:text-indigo-400",
               },
@@ -283,7 +281,6 @@ function HomeContent() {
       </section>
 
       {/* CTA Section */}
-      {/* bg-linear-to-br from-indigo-600 via-indigo-700 to-purple-700 */}
       <section className="py-20 lg:py-24 bg-linear-to-br from-indigo-600 via-indigo-700 to-purple-700">
         <div className="max-w-4x1 mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">
@@ -311,12 +308,15 @@ hover:bg-indigo-50 transition-all duration-200 shadow-lg">
       <footer className="py-12 ☐ bg-slate-900 dark:bg-slate-950 border-t border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-linear-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center ">
-                <ShoppingBag className="w-5 h-5 text-white" />
-              </div>
-              <span className="text-lg font-bold text-white">Shalaan</span>
-            </div>
+
+            <Image
+              src="/images/footer-logo.png"
+              alt="logo"
+              width={150}
+              height={20}
+              className="object-contain"
+            />
+            {/* </div> */}
             <div className="flex items-center gap-8">
               <Link href="/products" className="text-slate-400 hover:text-white transition-colors text-sm">
                 المنتجات
@@ -327,7 +327,7 @@ hover:bg-indigo-50 transition-all duration-200 shadow-lg">
 
             <div className="text-slate-500 text-sm">
               جميع الحقوق محفوظة
-              &copy; {new Date().getFullYear()} Shalaan
+              &copy; {new Date().getFullYear()} Elkhalil tech
             </div>
           </div>
         </div>

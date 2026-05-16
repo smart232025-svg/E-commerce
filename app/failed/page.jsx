@@ -2,7 +2,7 @@
 "use client";
 
 import Link from "next/link";
-import { XCircle, ShoppingBag } from "lucide-react";
+import { XCircle } from "lucide-react";
 
 export default function FailedPage() {
     return (

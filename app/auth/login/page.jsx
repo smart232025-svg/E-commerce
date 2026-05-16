@@ -68,7 +68,8 @@ function LoginForm() {
                     {/* Email */}
                     <div>
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            البريد الالكترونى                        </label>
+                            البريد الالكترونى
+                        </label>
 
                         <div className="relative">
                             <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />

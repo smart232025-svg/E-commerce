@@ -8,12 +8,7 @@ import {
     ShoppingBag,
     Loader2,
     Package,
-    Clock,
-    CheckCircle,
-    XCircle,
     AlertCircle,
-    MapPin,
-    Phone,
     User,
     FileText,
 } from "lucide-react";
@@ -25,7 +20,6 @@ function OrdersContent() {
     const [orders, setOrders] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState("");
-    const [expandedOrder, setExpandedOrder] = useState(null); // لعرض تفاصيل إضافية
 
     const fetchOrders = async () => {
         try {
@@ -62,8 +56,8 @@ function OrdersContent() {
             pending: ["confirmed", "cancelled"],
             confirmed: ["shipping", "cancelled"],
             shipping: ["delivered", "cancelled"],
-            delivered: [], // مفيش تغيير بعد التوصيل
-            cancelled: [], // مفيش تغيير بعد الإلغاء
+            delivered: [],
+            cancelled: [],
         };
         return transitions[currentStatus] || [];
     };
@@ -155,7 +149,6 @@ function OrdersContent() {
                                 key={order._id}
                                 className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm overflow-hidden hover:shadow-md transition"
                             >
-                                {/* رأس الطلب - نفس الجدول القديم لكن بشكل كارت */}
                                 <div className="p-5 border-b border-gray-100 dark:border-gray-700">
                                     <div className="flex flex-wrap items-center justify-between gap-3">
                                         <div className="flex items-center gap-4">
@@ -173,7 +166,6 @@ function OrdersContent() {
 
                                 <div className="p-5">
                                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                        {/* بيانات العميل */}
                                         <div className="space-y-3">
                                             <h3 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                                                 <User className="w-4 h-4 text-indigo-500" />
@@ -212,7 +204,6 @@ function OrdersContent() {
                                             </div>
                                         </div>
 
-                                        {/* المنتجات */}
                                         <div>
                                             <h3 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2 mb-3">
                                                 <Package className="w-4 h-4 text-indigo-500" />
@@ -232,7 +223,6 @@ function OrdersContent() {
                                             </div>
                                         </div>
 
-                                        {/* الإجمالي والإجراءات */}
                                         <div className="space-y-4">
                                             <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-4">
                                                 <div className="flex justify-between items-center mb-2">
@@ -246,7 +236,8 @@ function OrdersContent() {
                                                 </div>
                                             </div>
 
-                                            {/* تغيير الحالة */}
+
+
                                             <div>
                                                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                                     تغيير الحالة

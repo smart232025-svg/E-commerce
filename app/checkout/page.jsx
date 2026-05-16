@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 
 import { useState, useEffect } from "react";
@@ -7,7 +8,6 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, MapPin, Phone, User, Truck, CreditCard } from "lucide-react";
 
-// محافظات مصر
 const EGYPT_GOVERNORATES = [
     "القاهرة",
     "الجيزة",
@@ -46,7 +46,6 @@ export default function CheckoutPage() {
     const [loading, setLoading] = useState(false);
     const [paymentMethod, setPaymentMethod] = useState("cash_on_delivery");
 
-    // بيانات الفورم
     const [form, setForm] = useState({
         fullName: "",
         phone: "",
@@ -56,7 +55,6 @@ export default function CheckoutPage() {
         notes: "",
     });
 
-    // لو المستخدم مسجل دخول، نعبى البيانات تلقائياً
     useEffect(() => {
         if (user) {
             setForm(prev => ({
@@ -67,7 +65,6 @@ export default function CheckoutPage() {
         }
     }, [user]);
 
-    // لو السلة فاضية، نوديه لصفحة المنتجات
     useEffect(() => {
         if (cart.length === 0 && !loading) {
             router.push("/products");
@@ -86,7 +83,6 @@ export default function CheckoutPage() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // التحقق من صحة البيانات
         if (!form.fullName || !form.phone || !form.address || !form.governorate) {
             alert("من فضلك اكمل جميع البيانات المطلوبة");
             return;
@@ -95,7 +91,6 @@ export default function CheckoutPage() {
         setLoading(true);
 
         try {
-            // تجهيز بيانات المنتجات للـ API
             const cartItems = cart.map(item => ({
                 product: item.product._id,
                 name: item.product.title,
@@ -128,10 +123,10 @@ export default function CheckoutPage() {
             if (res.ok) {
                 if (data.url) {
                     window.open(data.url, "_blank");
-                    await clearCart(); // مسح السلة
+                    await clearCart();
                     router.push("/pending");
                 } else {
-                    await clearCart(); // مسح السلة
+                    await clearCart();
                     alert("تم استلام طلبك بنجاح!");
                     router.push("/products");
                 }
@@ -148,20 +143,18 @@ export default function CheckoutPage() {
     };
 
     if (cart.length === 0 && !loading) {
-        return null; // useEffect هيروّحه
+        return null;
     }
 
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-10">
             <div className="max-w-6xl mx-auto px-4">
-                {/* رجوع للسلة */}
                 <Link href="/cart" className="inline-flex items-center gap-2 text-indigo-600 mb-6 hover:text-indigo-700">
                     <ArrowLeft className="w-4 h-4" />
                     العودة للسلة
                 </Link>
 
                 <div className="grid md:grid-cols-3 gap-8">
-                    {/* الفورم - يأخذ ثلثين المساحة */}
                     <div className="md:col-span-2">
                         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-6">
                             <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">بيانات التوصيل</h2>
@@ -268,7 +261,6 @@ export default function CheckoutPage() {
                         </div>
                     </div>
 
-                    {/* ملخص الطلب - ثلث المساحة */}
                     <div>
                         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-6 sticky top-24">
                             <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">ملخص الطلب</h2>
@@ -299,7 +291,6 @@ export default function CheckoutPage() {
                                 </div>
                             </div>
 
-                            {/* اختيار طريقة الدفع */}
                             <div className="border-t pt-4 border-gray-200 dark:border-gray-700">
                                 <label className="block text-sm font-medium mb-3 text-gray-700 dark:text-gray-300">طريقة الدفع</label>
                                 <div className="space-y-2">

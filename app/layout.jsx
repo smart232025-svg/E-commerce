@@ -4,9 +4,12 @@ import Navbar from "@/components/layout/Navbar";
 import FloatingChatButton from "@/components/ui/FloatingChatButton";
 import { CartProvider } from "@/context/CartContext"
 export const metadata = {
-  title: "Shalaan Store",
+  title: "Elkhalil Tech",
   description:
     "Discover premium electronics, smartphones, accessories, and the latest tech products at Shalaan Store with fast delivery and secure shopping experience."
+  , icons: {
+    icon: "/logo.png",
+  },
 };
 
 export default function RootLayout({ children }) {

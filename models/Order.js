@@ -28,7 +28,6 @@ const orderSchema = new mongoose.Schema(
       enum: ["pending", "confirmed", "shipping", "delivered", "cancelled"],
     },
 
-    // ✅ بيانات العميل (المضافة)
     customer: {
       name: { type: String, required: true },
       phone: { type: String, required: true },
@@ -38,7 +37,6 @@ const orderSchema = new mongoose.Schema(
       notes: { type: String, default: "" },
     },
 
-    // ✅ طريقة الدفع (المضافة)
     paymentMethod: {
       type: String,
       required: true,
@@ -46,18 +44,15 @@ const orderSchema = new mongoose.Schema(
       enum: ["cash_on_delivery", "online"],
     },
 
-    // ✅ حالة الدفع (المضافة)
     paymentStatus: {
       type: String,
       default: "unpaid",
       enum: ["unpaid", "pending", "paid", "failed"],
     },
 
-    // ✅ للدفع الأونلاين (Fawaterk / Stripe)
-    paymentProvider: { type: String }, // "fawaterk" or "stripe"
-    paymentRef: { type: String }, // invoiceId from Fawaterk
+    paymentProvider: { type: String },
+    paymentRef: { type: String },
 
-    // حاجات قديمة ممكن تفضل (لكن مش مستخدمة دلوقتي)
     paymentResult: {
       id: { type: String },
       status: { type: String },

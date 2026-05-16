@@ -114,14 +114,13 @@ export function CartProvider({ children }) {
     }
   };
 
-  // ✅ CLEAR CART - اضف الدالة دي
   const clearCart = async () => {
     try {
       await fetch("/api/cart", {
         method: "DELETE",
         credentials: "include",
       });
-      setCart([]); // مسح السلة من الـ state
+      setCart([]);
     } catch (error) {
       console.log("Error clearing cart:", error);
     }
@@ -136,7 +135,7 @@ export function CartProvider({ children }) {
         increaseQuantity,
         decreaseQuantity,
         isInCart,
-        clearCart, // ✅ أضفها هنا في الـ value
+        clearCart,
       }}
     >
       {children}
