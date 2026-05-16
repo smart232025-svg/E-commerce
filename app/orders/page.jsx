@@ -100,7 +100,7 @@ function OrdersContent() {
             shipping: {
                 color: "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400",
                 icon: Package,
-                text: "جارٍ الشحن",
+                text: "جارٍ التوصيل",
             },
             delivered: {
                 color: "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400",
