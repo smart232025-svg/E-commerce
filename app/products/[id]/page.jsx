@@ -1,8 +1,9 @@
+
 /* eslint-disable react-hooks/set-state-in-effect */
 "use client"
 
 import { useEffect, useState } from "react"
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation" // أضفنا useRouter
 import Link from "next/link"
 import {
     ArrowLeft,
@@ -15,9 +16,12 @@ import {
 
 import Image from "next/image"
 import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/components/providers/AuthProvider"; // أضفنا useAuth
 
 function ProductContent() {
     const params = useParams()
+    const router = useRouter() // أضفنا router
+    const { isAuthenticated } = useAuth() // أضفنا isAuthenticated
     const [product, setProduct] = useState(null)
     const [isLoading, setIsLoading] = useState(true)
     const [error, setError] = useState("")
@@ -28,8 +32,22 @@ function ProductContent() {
 
     const productInCart = isInCart(product?._id);
 
+    // دالة معالجة إضافة المنتج للسلة مع التحقق من تسجيل الدخول
     const handleAddToCart = async () => {
         if (productInCart) return;
+
+        // التحقق من تسجيل الدخول
+        if (!isAuthenticated) {
+            // حفظ المنتج في sessionStorage عشان يرجع له بعد التسجيل
+            sessionStorage.setItem('redirectAfterLogin', window.location.pathname);
+            sessionStorage.setItem('productToAdd', JSON.stringify(product));
+
+            // توجيه المستخدم لتسجيل الدخول
+            router.push('/auth/login');
+            return;
+        }
+
+        // لو مسجل دخول، أضف المنتج للسلة
         setAddingToCart(true)
         await addToCart(product)
         setAddingToCart(false)
@@ -179,6 +197,16 @@ function ProductContent() {
                                             </>
                                         )}
                                     </div>
+
+                                    {/* رسالة للمستخدم غير المسجل */}
+                                    {!isAuthenticated && product.stock > 0 && (
+                                        <div className="mb-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
+                                            <p className="text-sm text-yellow-700 dark:text-yellow-400 flex items-center gap-2">
+                                                <AlertCircle className="w-4 h-4" />
+                                                <span>سجل دخولك لإضافة المنتج للسلة</span>
+                                            </p>
+                                        </div>
+                                    )}
                                 </div>
 
                                 <div className="border-t border-gray-200 dark:border-gray-700 pt-4 sm:pt-6 mt-2">
@@ -197,19 +225,26 @@ function ProductContent() {
                                                     w-full sm:flex-1 flex items-center justify-center gap-2 sm:gap-3 
                                                     px-4 sm:px-6 py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg 
                                                     transition-all duration-200
-                                                    ${isInCart(product._id)
+                                                    ${productInCart
                                                         ? "bg-green-500 hover:bg-green-600 text-white shadow-lg shadow-green-500/25"
-                                                        : "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600"
+                                                        : !isAuthenticated
+                                                            ? "bg-yellow-500 hover:bg-yellow-600 text-white shadow-lg shadow-yellow-500/25"
+                                                            : "bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg shadow-indigo-500/25"
                                                     }
                                                     disabled:opacity-50 disabled:cursor-not-allowed
                                                 `}
                                             >
                                                 {addingToCart ? (
                                                     <Loader2 className="w-5 h-5 animate-spin" />
-                                                ) : isInCart(product._id) ? (
+                                                ) : productInCart ? (
                                                     <>
                                                         <Check className="w-5 h-5" />
                                                         <span>فى السلة</span>
+                                                    </>
+                                                ) : !isAuthenticated ? (
+                                                    <>
+                                                        <AlertCircle className="w-5 h-5" />
+                                                        <span>سجل دخول للإضافة</span>
                                                     </>
                                                 ) : (
                                                     <>
