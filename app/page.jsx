@@ -1,4 +1,3 @@
-
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -14,7 +13,7 @@ import Image from "next/image";
 function HomeContent() {
   const { isAuthenticated, isloading } = useAuth();
   const [allProducts, setAllProducts] = useState([]);
-  const [productsLoading, setProductsLoading] = useState(true);
+  const [productsLoading, setProductsLoading] = useState(true); // مفيش تغيير هنا
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -30,7 +29,7 @@ function HomeContent() {
         console.error("Failed to fetch products:", error);
         setAllProducts([]);
       } finally {
-        setProductsLoading(false);
+        setProductsLoading(false); // اللودر بيختفي بعد ما البيانات تجيب
       }
     };
     fetchProducts();
@@ -59,26 +58,35 @@ function HomeContent() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16 space-y-16">
 
-
-
-        {Object.entries(groupedProducts).map(([category, products]) => (
-          <ProductSlider
-            key={category}
-            products={products}
-            title={`قسم ${category}`}
-          />
-        ))}
-
-        {allProducts.length === 0 && (
-          <div className="text-center py-16 bg-white dark:bg-gray-800 rounded-2xl shadow-sm">
-            <Package className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-            <h3 className="text-xl text-gray-700 font-semibold dark:text-gray-300 mb-2">
-              لا توجد منتجات
-            </h3>
-            <p className="text-gray-500 dark:text-gray-400">
-              سيتم إضافة المنتجات قريباً
-            </p>
+        {/* ===== لودر التحميل ===== */}
+        {productsLoading ? (
+          <div className="flex items-center justify-center py-20">
+            <Loader2 className="w-8 h-8 text-indigo-600 animate-spin" />
           </div>
+        ) : (
+          <>
+            {/* المنتجات بعد التحميل */}
+            {Object.entries(groupedProducts).map(([category, products]) => (
+              <ProductSlider
+                key={category}
+                products={products}
+                title={`قسم ${category}`}
+              />
+            ))}
+
+            {/* لو مفيش منتجات خالص */}
+            {allProducts.length === 0 && (
+              <div className="text-center py-16 bg-white dark:bg-gray-800 rounded-2xl shadow-sm">
+                <Package className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
+                <h3 className="text-xl text-gray-700 font-semibold dark:text-gray-300 mb-2">
+                  لا توجد منتجات
+                </h3>
+                <p className="text-gray-500 dark:text-gray-400">
+                  سيتم إضافة المنتجات قريباً
+                </p>
+              </div>
+            )}
+          </>
         )}
       </div>
 
