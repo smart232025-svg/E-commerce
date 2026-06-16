@@ -1,7 +1,9 @@
+
 /* eslint-disable react-hooks/set-state-in-effect */
 "use client"
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/components/providers/AuthProvider';
+import { useCart } from '@/context/CartContext'; // استيراد الـ Cart
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Mail, Lock, Eye, EyeOff, LogIn, Loader2, UserPlus, User } from 'lucide-react';
@@ -17,13 +19,38 @@ function RegisterForm() {
     const [error, setError] = useState("")
     const [isLoading, setIsLoading] = useState(false)
     const { register, isAuthenticated } = useAuth()
+    const { addToCart } = useCart() // استيراد دالة الإضافة للسلة
     const router = useRouter()
 
     useEffect(() => {
         if (isAuthenticated) {
-            router.push("/")
+            // التحقق من وجود منتج محفوظ للإضافة
+            const productToAdd = sessionStorage.getItem('productToAdd');
+
+            if (productToAdd) {
+                try {
+                    const product = JSON.parse(productToAdd);
+                    // إضافة المنتج للسلة
+                    addToCart(product);
+                    // مسح المنتج من sessionStorage
+                    sessionStorage.removeItem('productToAdd');
+
+                    // اختياري: رسالة نجاح للمستخدم
+                    console.log('تم إضافة المنتج للسلة بنجاح');
+                } catch (error) {
+                    console.error('خطأ في إضافة المنتج:', error);
+                }
+            }
+
+            // مسح مسار العودة
+            sessionStorage.removeItem('redirectAfterLogin');
+
+            // التوجيه للصفحة الرئيسية أو الصفحة السابقة
+            const redirectPath = sessionStorage.getItem('redirectAfterLogin') || '/';
+            sessionStorage.removeItem('redirectAfterLogin');
+            router.push(redirectPath);
         }
-    }, [isAuthenticated, router])
+    }, [isAuthenticated, router, addToCart])
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -41,7 +68,7 @@ function RegisterForm() {
 
         try {
             await register(name, email, password)
-            router.push("/")
+            // التوجيه هيكون في الـ useEffect
         } catch (error) {
             setError(error.message || "Registration failed ,please try again")
         } finally {
@@ -60,10 +87,12 @@ function RegisterForm() {
                     </div>
 
                     <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-                        إنشاء حساب                    </h1>
+                        إنشاء حساب
+                    </h1>
 
                     <p className="text-gray-600 dark:text-gray-400 mt-2">
-                        إنضم إلينا اليوم                    </p>
+                        إنضم إلينا اليوم
+                    </p>
                 </div>
 
                 {/* Error */}
@@ -81,7 +110,8 @@ function RegisterForm() {
                     {/* Name */}
                     <div>
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            الإسم بالكامل                        </label>
+                            الإسم بالكامل
+                        </label>
 
                         <div className="relative">
                             <User className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
@@ -101,7 +131,8 @@ function RegisterForm() {
                     {/* Email */}
                     <div>
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            البريد الالكترونى                        </label>
+                            البريد الالكترونى
+                        </label>
 
                         <div className="relative">
                             <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
@@ -154,7 +185,8 @@ function RegisterForm() {
                     <div>
 
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            تأكيد الرقم السرى                        </label>
+                            تأكيد الرقم السرى
+                        </label>
 
                         <div className="relative">
                             <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
@@ -171,7 +203,7 @@ function RegisterForm() {
 
                             <button type='button' onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                                 className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600'>
-                                {confirmPassword ? (
+                                {showConfirmPassword ? (
                                     <EyeOff className='w-5 h-5' />
                                 ) : (
                                     <Eye className='w-5 h-5' />
@@ -209,11 +241,12 @@ function RegisterForm() {
                         <Link
                             href="/auth/login"
                             className="text-indigo-600 hover:text-indigo-700 font-medium">
-                            تسجيل الدخول                        </Link>
+                            تسجيل الدخول
+                        </Link>
                     </p>
                 </div>
             </div>
-        </div >
+        </div>
     )
 }
 function LoadingFallback() {
@@ -224,11 +257,11 @@ function LoadingFallback() {
                     <Loader2 className="w-8 h-8 text-indigo-600 animate-spin" />
                 </div>
             </div>
-        </div >
+        </div>
 
     );
 }
-export default function LoginPage() {
+export default function RegisterPage() {
     const [mounted, setMounted] = useState(false)
     useEffect(() => {
         setMounted(true)
