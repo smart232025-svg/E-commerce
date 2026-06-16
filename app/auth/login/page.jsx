@@ -1,7 +1,9 @@
+
 /* eslint-disable react-hooks/set-state-in-effect */
 "use client"
 import { useState, useEffect, Suspense } from 'react';
 import { useAuth } from '@/components/providers/AuthProvider';
+import { useCart } from '@/context/CartContext'; // استيراد الـ Cart
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Mail, Lock, Eye, EyeOff, LogIn, Loader2 } from 'lucide-react';
@@ -13,12 +15,38 @@ function LoginForm() {
     const [error, setError] = useState("")
     const [isLoading, setIsLoading] = useState(false)
     const { login, isAuthenticated } = useAuth()
+    const { addToCart } = useCart() // استيراد دالة الإضافة للسلة
     const router = useRouter()
+
     useEffect(() => {
         if (isAuthenticated) {
-            router.push("/")
+            // التحقق من وجود منتج محفوظ للإضافة
+            const productToAdd = sessionStorage.getItem('productToAdd');
+
+            if (productToAdd) {
+                try {
+                    const product = JSON.parse(productToAdd);
+                    // إضافة المنتج للسلة
+                    addToCart(product);
+                    // مسح المنتج من sessionStorage
+                    sessionStorage.removeItem('productToAdd');
+
+                    // اختياري: رسالة نجاح للمستخدم
+                    console.log('تم إضافة المنتج للسلة بنجاح');
+                } catch (error) {
+                    console.error('خطأ في إضافة المنتج:', error);
+                }
+            }
+
+            // مسح مسار العودة
+            sessionStorage.removeItem('redirectAfterLogin');
+
+            // التوجيه للصفحة الرئيسية أو الصفحة السابقة
+            const redirectPath = sessionStorage.getItem('redirectAfterLogin') || '/';
+            sessionStorage.removeItem('redirectAfterLogin');
+            router.push(redirectPath);
         }
-    }, [isAuthenticated, router])
+    }, [isAuthenticated, router, addToCart])
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -26,7 +54,7 @@ function LoginForm() {
         setIsLoading(true)
         try {
             await login(email, password)
-            router.push("/")
+            // التوجيه هيكون في الـ useEffect
         } catch (error) {
             setError(error.message || "Login failed ,please try again")
         } finally {
@@ -101,7 +129,6 @@ function LoginForm() {
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
                                 dir='ltr'
-
                                 placeholder="..............."
                                 className="w-full pl-10 pr-12 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
                             />
@@ -129,7 +156,8 @@ function LoginForm() {
                         {isLoading ? (
                             <>
                                 <Loader2 className='w-5 h-5 animate-spin' />
-                                تسجيل الدخول ...                            </>
+                                تسجيل الدخول ...
+                            </>
                         ) : (
                             <>
                                 تسجيل الدخول
@@ -146,13 +174,15 @@ function LoginForm() {
                         <Link
                             href="/auth/register"
                             className="text-indigo-600 hover:text-indigo-700 font-medium">
-                            إنشاء حساب                        </Link>
+                            إنشاء حساب
+                        </Link>
                     </p>
                 </div>
             </div>
-        </div >
+        </div>
     )
 }
+
 function LoadingFallback() {
     return (
         <div className="w-full max-w-md">
@@ -161,10 +191,10 @@ function LoadingFallback() {
                     <Loader2 className="w-8 h-8 text-indigo-600 animate-spin" />
                 </div>
             </div>
-        </div >
-
+        </div>
     );
 }
+
 export default function LoginPage() {
     const [mounted, setMounted] = useState(false)
     useEffect(() => {
