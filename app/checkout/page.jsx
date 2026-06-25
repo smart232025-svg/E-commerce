@@ -336,7 +336,7 @@ export default function CheckoutPage() {
                                             الدفع عند الاستلام
                                         </span>
                                     </label>
-                                    {/* <label className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 text-xs sm:text-sm border rounded-xl cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                                    <label className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 text-xs sm:text-sm border rounded-xl cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition">
                                         <input
                                             type="radio"
                                             name="paymentMethod"
@@ -349,7 +349,7 @@ export default function CheckoutPage() {
                                         <span className="text-gray-700 dark:text-gray-300 truncate">
                                             دفع أونلاين
                                         </span>
-                                    </label> */}
+                                    </label>
                                 </div>
                             </div>
                         </div>
