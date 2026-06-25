@@ -30,7 +30,7 @@ export default function Navbar() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16">
 
-                    {/* Desktop Navigation */}
+                    {/* ===== القسم الأيسر (الروابط) ===== */}
                     <div className="hidden md:flex items-center gap-6">
                         <Link
                             href="/"
@@ -48,6 +48,7 @@ export default function Navbar() {
                         {isloading ? (
                             <div className="w-20 h-10 bg-gray-200 dark:bg-gray-700 rounded-lg animate-pulse" />
                         ) : isAuthenticated ? (
+                            // ===== مستخدم مسجل (أدمن) =====
                             <div className="flex items-center gap-4">
                                 {user?.role !== "admin" && (
                                     <Link
@@ -75,6 +76,7 @@ export default function Navbar() {
                                     <User className="w-5 h-5" />
                                 </Link>
 
+                                {/* ✅ السلة ظاهرة للمسجلين */}
                                 <Link href="/cart" className="relative">
                                     <ShoppingCart className="text-gray-600 dark:text-white hover:text-indigo-600 transition-colors w-5 h-5" />
                                     <span className="absolute -top-2 -left-3 bg-indigo-500 text-white text-xs min-w-4.5 h-4.5 flex items-center justify-center rounded-full px-1">
@@ -91,6 +93,7 @@ export default function Navbar() {
                                 </button>
                             </div>
                         ) : (
+                            // ===== مستخدم غير مسجل (ضيف) =====
                             <div className="flex items-center gap-3">
                                 <Link
                                     href="/auth/login"
@@ -98,20 +101,24 @@ export default function Navbar() {
                                 >
                                     تسجيل دخول
                                 </Link>
-                                <Link
-                                    href="/auth/register"
-                                    className="px-4 py-2 text-white rounded-lg bg-indigo-600 hover:bg-indigo-700 transition-colors font-medium"
-                                >
-                                    إنشاء حساب
+
+                                {/* ✅ السلة ظاهرة للضيوف كمان */}
+                                <Link href="/cart" className="relative">
+                                    <ShoppingCart className="text-gray-600 dark:text-white hover:text-indigo-600 transition-colors w-5 h-5" />
+                                    <span className="absolute -top-2 -left-3 bg-indigo-500 text-white text-xs min-w-4.5 h-4.5 flex items-center justify-center rounded-full px-1">
+                                        {cart.length}
+                                    </span>
                                 </Link>
                             </div>
                         )}
                     </div>
 
+                    {/* ===== اللوجو ===== */}
                     <Link href="/" className="flex items-center gap-2">
                         <Image src="/images/nav-logo.png" alt="logo" width={220} height={100} />
                     </Link>
-                    {/* Mobile Menu Button */}
+
+                    {/* ===== زر القائمة للموبايل ===== */}
                     <button
                         className="md:hidden text-gray-600 dark:text-gray-300 cursor-pointer"
                         onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -121,7 +128,7 @@ export default function Navbar() {
                 </div>
             </div>
 
-            {/* Mobile Navigation */}
+            {/* ===== القائمة الجانبية للموبايل ===== */}
             {isMenuOpen && (
                 <div className="md:hidden bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 py-4">
                     <div className="flex flex-col gap-2 px-4">
@@ -140,7 +147,21 @@ export default function Navbar() {
                             المنتجات
                         </Link>
 
+                        {/* ✅ السلة في الموبايل للجميع */}
+                        <Link
+                            href="/cart"
+                            className="relative flex items-center w-fit py-2 gap-2"
+                            onClick={() => setIsMenuOpen(false)}
+                        >
+                            <ShoppingCart className="relative text-gray-600 dark:text-gray-300 hover:text-indigo-600 transition-colors w-5 h-5" />
+                            <span className="absolute -top-2 -left-3 bg-indigo-500 text-white text-xs min-w-4.5 h-4.5 flex items-center justify-center rounded-full px-1">
+                                {cart.length}
+                            </span>
+                            {/* <span className="text-gray-600 dark:text-gray-300">السلة</span> */}
+                        </Link>
+
                         {isAuthenticated ? (
+                            // ===== موبايل - مسجل =====
                             <>
                                 {user?.role !== "admin" && (
                                     <Link
@@ -170,17 +191,6 @@ export default function Navbar() {
                                     الحساب
                                 </Link>
 
-                                <Link
-                                    href="/cart"
-                                    className="relative flex items-center w-fit py-2"
-                                    onClick={() => setIsMenuOpen(false)}
-                                >
-                                    <ShoppingCart className="text-gray-600 dark:text-gray-300 hover:text-indigo-600 transition-colors w-5 h-5" />
-                                    <span className="absolute -top-2 -left-3 bg-indigo-500 text-white text-xs min-w-4.5 h-4.5 flex items-center justify-center rounded-full px-1">
-                                        {cart.length}
-                                    </span>
-                                </Link>
-
                                 <button
                                     className="py-2 text-gray-600 dark:text-gray-300 hover:text-red-600 text-left"
                                     onClick={() => {
@@ -192,6 +202,7 @@ export default function Navbar() {
                                 </button>
                             </>
                         ) : (
+                            // ===== موبايل - غير مسجل (ضيف) =====
                             <>
                                 <Link
                                     href="/auth/login"
@@ -199,13 +210,6 @@ export default function Navbar() {
                                     onClick={() => setIsMenuOpen(false)}
                                 >
                                     تسجيل دخول
-                                </Link>
-                                <Link
-                                    href="/auth/register"
-                                    className="py-2 text-indigo-600 font-medium"
-                                    onClick={() => setIsMenuOpen(false)}
-                                >
-                                    إنشاء حساب
                                 </Link>
                             </>
                         )}
