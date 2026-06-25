@@ -13,7 +13,7 @@ import Image from "next/image";
 function HomeContent() {
   const { isAuthenticated, isloading } = useAuth();
   const [allProducts, setAllProducts] = useState([]);
-  const [productsLoading, setProductsLoading] = useState(true); // مفيش تغيير هنا
+  const [productsLoading, setProductsLoading] = useState(true);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -29,7 +29,7 @@ function HomeContent() {
         console.error("Failed to fetch products:", error);
         setAllProducts([]);
       } finally {
-        setProductsLoading(false); // اللودر بيختفي بعد ما البيانات تجيب
+        setProductsLoading(false);
       }
     };
     fetchProducts();
@@ -91,13 +91,13 @@ function HomeContent() {
       </div>
 
       {/* CTA Section */}
-      <section className="py-20 lg:py-24 bg-gradient-to-br from-indigo-600 via-indigo-700 to-purple-700 mt-8">
+      <section className="py-20 lg:py-24 bg-linear-to-br from-indigo-600 via-indigo-700 to-purple-700 mt-8">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">
             جاهز لبداية التصفح الآن
           </h2>
           <p className="text-lg text-indigo-100 max-w-2xl mx-auto mb-10">
-            انضم إلى آلاف العملاء الآن. تصفح منتجاتنا واعثر على ما تحتاجه بالضبط.
+            تصفح منتجاتنا واعثر على ما تحتاجه بالضبط. يمكنك الشراء بسهولة بدون إنشاء حساب.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
             <Link
@@ -107,22 +107,17 @@ function HomeContent() {
               <ShoppingBag className="w-5 h-5" />
               تصفح جميع المنتجات
             </Link>
-            {!isloading && !isAuthenticated && (
-              <Link
-                href="/auth/register"
-                className="inline-flex items-center gap-2 px-8 py-4 text-white font-semibold rounded-xl border-2 border-white/30 hover:bg-white/30 transition-all duration-200"
-              >
-                إنشاء حساب مجاني
-              </Link>
-            )}
           </div>
         </div>
       </section>
+
 
       {/* Footer */}
       <footer className="py-12 bg-slate-900 dark:bg-slate-950 border-t border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+
+            {/* اللوجو */}
             <Image
               src="/images/footer-logo.png"
               alt="logo"
@@ -130,14 +125,27 @@ function HomeContent() {
               height={20}
               className="object-contain"
             />
-            <div className="flex items-center gap-8">
-              <Link href="/products" className="text-slate-400 hover:text-white transition-colors text-sm">
-                المنتجات
+
+            {/* الروابط */}
+            <div className="flex flex-wrap items-center justify-center gap-4 md:gap-8">
+
+              <Link href="/privacyPolicies" className="text-slate-400 hover:text-white transition-colors text-sm">
+                سياسة الخصوصية
               </Link>
-              <span className="text-slate-600 text-sm">سياسة الخصوصية</span>
-              <span className="text-slate-600 text-sm">شروط الخدمة</span>
+              <Link href="/returnPolices" className="text-slate-400 hover:text-white transition-colors text-sm">
+                سياسة الاسترجاع
+              </Link>
+              <Link href="/termsAndConditions" className="text-slate-400 hover:text-white transition-colors text-sm">
+                الشروط والأحكام
+              </Link>
+              <Link href="/contactUs" className="text-slate-400 hover:text-white transition-colors text-sm">
+                معلومات التواصل
+              </Link>
             </div>
-            <div className="text-slate-500 text-sm">
+
+
+            {/* حقوق النشر */}
+            <div className="text-slate-500 text-sm text-center">
               جميع الحقوق محفوظة &copy; {new Date().getFullYear()} Elkhalil tech
             </div>
           </div>
