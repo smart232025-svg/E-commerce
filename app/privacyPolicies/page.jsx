@@ -44,16 +44,16 @@ export default function PoliciesPage() {
                             <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">
                                 تواصل معنا عبر البريد الإلكتروني أو الهاتف وسنرد عليك في أقرب وقت.
                             </p>
-                            <div className="flex flex-wrap gap-3">
+                              <div className="flex flex-wrap gap-3">
                                 <a
-                                    href="smart232025@gmail.com"
+                                    href="mailto:smart232025@gmail.com"
                                     className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors text-sm"
                                 >
                                     <Mail className="w-4 h-4" />
                                     smart232025@gmail.com
                                 </a>
                                 <a
-                                    href="tel:+201000000000"
+                                    href="tel:+201038756048"
                                     className="inline-flex items-center gap-2 px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-white rounded-lg transition-colors text-sm"
                                 >
                                     <Phone className="w-4 h-4" />
