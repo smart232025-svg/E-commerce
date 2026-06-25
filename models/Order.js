@@ -1,10 +1,11 @@
+
 import mongoose from "mongoose";
 
 const orderSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
+      required: false, 
       ref: "User",
     },
     orderItems: [
@@ -59,6 +60,19 @@ const orderSchema = new mongoose.Schema(
       email_address: { type: String },
     },
     stripeSessionId: { type: String, unique: true, sparse: true },
+
+    isGuest: {
+      type: Boolean,
+      default: false,
+    },
+    guestInfo: {
+      name: { type: String },
+      phone: { type: String },
+      address: { type: String },
+      city: { type: String },
+      governorate: { type: String },
+      email: { type: String },
+    },
   },
   { timestamps: true },
 );
