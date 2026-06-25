@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
@@ -6,26 +5,98 @@ import { createContext, useContext, useEffect, useState } from "react";
 const CartContext = createContext();
 
 export function CartProvider({ children }) {
-  const [cart, setCart] = useState([]);
 
-  // FETCH CART
-  const fetchCart = async () => {
+  const [cart, setCart] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState(null);
+
+  // ===== التحقق من المصادقة من localStorage أو cookie =====
+  const checkAuthStatus = async () => {
     try {
-      const res = await fetch("/api/cart", {
+      const res = await fetch("/api/auth/me", {
         credentials: "include",
       });
-      const data = await res.json();
-      setCart(data.items || []);
+      if (res.ok) {
+        const data = await res.json();
+        setUser(data);
+        setIsAuthenticated(true);
+      } else {
+        setIsAuthenticated(false);
+        setUser(null);
+      }
     } catch (error) {
-      console.log(error);
+      console.error("Auth check error:", error);
+      setIsAuthenticated(false);
+      setUser(null);
     }
   };
 
-  // LOAD CART
+  // ===== تحميل السلة =====
+  const loadCart = async () => {
+    setIsLoading(true);
+    try {
+      // ✅ نتحقق من المصادقة أولاً
+      await checkAuthStatus();
+
+      if (isAuthenticated && user) {
+        // ✅ مستخدم مسجل (أدمن) - جلب من MongoDB
+        const res = await fetch("/api/cart", {
+          credentials: "include",
+        });
+        const data = await res.json();
+        setCart(data.items || []);
+        localStorage.setItem("guestCart", JSON.stringify(data.items || []));
+      } else {
+        // ✅ ضيف - جلب من localStorage
+        const savedCart = localStorage.getItem("guestCart");
+        if (savedCart) {
+          setCart(JSON.parse(savedCart));
+        } else {
+          setCart([]);
+        }
+      }
+    } catch (error) {
+      console.error("Error loading cart:", error);
+      const savedCart = localStorage.getItem("guestCart");
+      if (savedCart) {
+        setCart(JSON.parse(savedCart));
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // ===== حفظ السلة =====
+  const saveCart = async (newCart) => {
+    setCart(newCart);
+    localStorage.setItem("guestCart", JSON.stringify(newCart));
+
+    if (isAuthenticated && user) {
+      try {
+        await fetch("/api/cart", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({
+            items: newCart.map((item) => ({
+              product: item.product._id || item.product,
+              quantity: item.quantity,
+            })),
+          }),
+        });
+      } catch (error) {
+        console.error("Error saving cart to DB:", error);
+      }
+    }
+  };
+
+  // ===== تحميل السلة عند بدء التشغيل =====
   useEffect(() => {
-    fetchCart();
+    loadCart();
   }, []);
 
+  // ===== دالة التحقق من وجود المنتج =====
   const isInCart = (productId) => {
     return cart.some((item) => {
       const itemProductId = item.product?._id || item.product;
@@ -33,109 +104,94 @@ export function CartProvider({ children }) {
     });
   };
 
-  // ADD TO CART
+  // ===== إضافة للسلة =====
   const addToCart = async (product) => {
-    try {
-      await fetch("/api/cart", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          productId: product._id,
-        }),
-      });
+    const newCart = [...cart];
+    const existingIndex = newCart.findIndex((item) => {
+      const itemProductId = item.product?._id || item.product;
+      return itemProductId?.toString() === product._id?.toString();
+    });
 
-      fetchCart();
-    } catch (error) {
-      console.log(error);
+    if (existingIndex !== -1) {
+      newCart[existingIndex].quantity += 1;
+    } else {
+      newCart.push({ product, quantity: 1 });
     }
+
+    await saveCart(newCart);
   };
 
-  // REMOVE
+  // ===== حذف من السلة =====
   const removeFromCart = async (productId) => {
-    try {
-      await fetch(`/api/cart/${productId}`, {
-        method: "DELETE",
-        credentials: "include",
-      });
-
-      fetchCart();
-    } catch (error) {
-      console.log(error);
-    }
+    const newCart = cart.filter((item) => {
+      const itemProductId = item.product?._id || item.product;
+      return itemProductId?.toString() !== productId?.toString();
+    });
+    await saveCart(newCart);
   };
 
-  // INCREASE
+  // ===== زيادة الكمية =====
   const increaseQuantity = async (productId) => {
-    try {
-      await fetch("/api/cart/increase", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          productId,
-        }),
-      });
-
-      fetchCart();
-    } catch (error) {
-      console.log(error);
-    }
+    const newCart = cart.map((item) => {
+      const itemProductId = item.product?._id || item.product;
+      if (itemProductId?.toString() === productId?.toString()) {
+        return { ...item, quantity: item.quantity + 1 };
+      }
+      return item;
+    });
+    await saveCart(newCart);
   };
 
-  // DECREASE
+  // ===== إنقاص الكمية =====
   const decreaseQuantity = async (productId) => {
-    try {
-      const res = await fetch("/api/cart/decrease", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ productId }),
-      });
-
-      if (res.status === 204) {
-        fetchCart();
-        return;
-      }
-
-      const data = await res.json();
-      if (!res.ok) {
-        console.error("Error decreasing quantity:", data.message);
-        return;
-      }
-
-      fetchCart();
-    } catch (error) {
-      console.log(error);
-    }
+    const newCart = cart
+      .map((item) => {
+        const itemProductId = item.product?._id || item.product;
+        if (itemProductId?.toString() === productId?.toString()) {
+          return { ...item, quantity: item.quantity - 1 };
+        }
+        return item;
+      })
+      .filter((item) => item.quantity > 0);
+    await saveCart(newCart);
   };
 
+  // ===== مسح السلة بالكامل =====
   const clearCart = async () => {
-    try {
-      await fetch("/api/cart", {
-        method: "DELETE",
-        credentials: "include",
-      });
-      setCart([]);
-    } catch (error) {
-      console.log("Error clearing cart:", error);
-    }
+    await saveCart([]);
+  };
+
+  // ===== دمج سلة الضيف مع سلة المستخدم =====
+  const mergeCarts = (guestCart, userCart) => {
+    const merged = [...userCart];
+    guestCart.forEach((guestItem) => {
+      const existing = merged.find(
+        (item) => item.product._id === guestItem.product._id,
+      );
+      if (existing) {
+        existing.quantity += guestItem.quantity;
+      } else {
+        merged.push(guestItem);
+      }
+    });
+    return merged;
   };
 
   return (
     <CartContext.Provider
       value={{
         cart,
+        isLoading,
         addToCart,
         removeFromCart,
         increaseQuantity,
         decreaseQuantity,
         isInCart,
         clearCart,
+        mergeCarts,
+        saveCart,
+        loadCart,
+        cartCount: cart.reduce((sum, item) => sum + item.quantity, 0),
       }}
     >
       {children}
