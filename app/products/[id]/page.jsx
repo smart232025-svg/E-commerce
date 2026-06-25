@@ -1,9 +1,8 @@
-
 /* eslint-disable react-hooks/set-state-in-effect */
 "use client"
 
 import { useEffect, useState } from "react"
-import { useParams } from "next/navigation" 
+import { useParams, useRouter } from "next/navigation" // ← أضفنا useRouter
 import Link from "next/link"
 import {
     ArrowLeft,
@@ -19,7 +18,7 @@ import { useCart } from "@/context/CartContext";
 
 function ProductContent() {
     const params = useParams()
-   
+    const router = useRouter() // ← أضفنا router
     const [product, setProduct] = useState(null)
     const [isLoading, setIsLoading] = useState(true)
     const [error, setError] = useState("")
@@ -30,12 +29,21 @@ function ProductContent() {
 
     const productInCart = isInCart(product?._id);
 
-    // ✅ دالة مبسطة - أي حد يضيف للسلة مباشرة
-    const handleAddToCart = async () => {
-        if (productInCart) return;
+    // ✅ دالة جديدة - إضافة للسلة + توجيه للدفع
+    const handleBuyNow = async () => {
+        if (productInCart) {
+            // لو موجود بالفعل في السلة، اروح للدفع مباشرة
+            router.push('/checkout');
+            return;
+        }
+
         setAddingToCart(true)
+        // إضافة المنتج للسلة
         await addToCart(product)
         setAddingToCart(false)
+
+        // التوجيه لصفحة الدفع
+        router.push('/checkout');
     }
 
     useEffect(() => {
@@ -102,6 +110,7 @@ function ProductContent() {
                     <div className="p-4 sm:p-6 md:p-8">
                         <div className="flex flex-col lg:grid lg:grid-cols-2 gap-6 lg:gap-8">
 
+                            {/* الصور */}
                             <div className="flex flex-col gap-3">
                                 <div className="relative aspect-square bg-gray-100 dark:bg-gray-700 rounded-xl overflow-hidden">
                                     {selectedImage ? (
@@ -151,6 +160,7 @@ function ProductContent() {
                                 )}
                             </div>
 
+                            {/* التفاصيل */}
                             <div className="flex flex-col">
                                 <div className="flex-1">
                                     <span className="inline-block py-1 px-3 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
@@ -182,8 +192,6 @@ function ProductContent() {
                                             </>
                                         )}
                                     </div>
-
-                                    {/* ❌ تم إزالة رسالة "سجل دخولك" */}
                                 </div>
 
                                 <div className="border-t border-gray-200 dark:border-gray-700 pt-4 sm:pt-6 mt-2">
@@ -195,11 +203,12 @@ function ProductContent() {
 
                                     {product.stock > 0 ? (
                                         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                                            {/* ✅ زر الشراء المباشر */}
                                             <button
-                                                onClick={handleAddToCart}
-                                                disabled={addingToCart || productInCart}
+                                                onClick={handleBuyNow}
+                                                disabled={addingToCart}
                                                 className={`
-                                                    w-full sm:flex-1 flex items-center justify-center gap-2 sm:gap-3 
+                                                    w-full flex items-center justify-center gap-2 sm:gap-3 
                                                     px-4 sm:px-6 py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg 
                                                     transition-all duration-200
                                                     ${productInCart
@@ -213,13 +222,13 @@ function ProductContent() {
                                                     <Loader2 className="w-5 h-5 animate-spin" />
                                                 ) : productInCart ? (
                                                     <>
-                                                        <Check className="w-5 h-5" />
-                                                        <span>فى السلة</span>
+                                                        <ShoppingCart className="w-5 h-5" />
+                                                        <span>الذهاب للدفع</span>
                                                     </>
                                                 ) : (
                                                     <>
                                                         <ShoppingCart className="w-5 h-5" />
-                                                        <span>إضافة للسلة</span>
+                                                        <span>شراء الآن</span>
                                                     </>
                                                 )}
                                             </button>
