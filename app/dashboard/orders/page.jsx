@@ -231,14 +231,14 @@ function OrdersContent() {
                                                         {order.totalPrice?.toFixed(2)} ج.م
                                                     </span>
                                                 </div>
-                                                <div className="text-sm text-gray-500 dark:text-gray-400 text-center">
+                                                {/* <div className="text-sm text-gray-500 dark:text-gray-400 text-center">
                                                     شامل الضرائب
-                                                </div>
+                                                </div> */}
                                             </div>
 
 
 
-                                            <div>
+                                            {/* <div>
                                                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                                     تغيير الحالة
                                                 </label>
@@ -265,7 +265,7 @@ function OrdersContent() {
                                                         </option>
                                                     ))}
                                                 </select>
-                                            </div>
+                                            </div> */}
                                         </div>
                                     </div>
                                 </div>
