@@ -25,29 +25,29 @@ export default function PoliciesPage() {
                         {/* ===== معلومات التواصل ===== */}
                         <section className="mb-10">
 
-                            <div className="grid sm:grid-cols-2 gap-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4">
-                                <div className="flex items-center gap-3">
-                                    <Phone className="w-5 h-5 text-indigo-500" />
-                                    <div>
-                                        <p className="text-sm text-gray-500 dark:text-gray-400">رقم الهاتف</p>
-                                        <p className="font-medium text-gray-900 dark:text-white">01038756048</p>
-                                    </div>
-                                </div>
-                                <div className="flex items-center gap-3">
-                                    <Mail className="w-5 h-5 text-indigo-500" />
-                                    <div>
-                                        <p className="text-sm text-gray-500 dark:text-gray-400">البريد الإلكتروني</p>
-                                        <p className="font-medium text-gray-900 dark:text-white">smart232025@gmail.com</p>
-                                    </div>
-                                </div>
-                                <div className="flex items-center gap-3 col-span-2">
-                                    <MapPin className="w-5 h-5 text-indigo-500" />
-                                    <div>
-                                        <p className="text-sm text-gray-500 dark:text-gray-400">العنوان</p>
-                                        <p className="font-medium text-gray-900 dark:text-white">مصر، المنوفية</p>
-                                    </div>
-                                </div>
-                            </div>
+<div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4 space-y-4">
+    <div className="flex items-center gap-3">
+        <Phone className="w-5 h-5 text-indigo-500" />
+        <div>
+            <p className="text-sm text-gray-500 dark:text-gray-400">رقم الهاتف</p>
+            <p className="font-medium text-gray-900 dark:text-white">01038756048</p>
+        </div>
+    </div>
+    <div className="flex items-center gap-3">
+        <Mail className="w-5 h-5 text-indigo-500" />
+        <div>
+            <p className="text-sm text-gray-500 dark:text-gray-400">البريد الإلكتروني</p>
+            <p className="font-medium text-gray-900 dark:text-white">smart232025@gmail.com</p>
+        </div>
+    </div>
+    <div className="flex items-center gap-3">
+        <MapPin className="w-5 h-5 text-indigo-500" />
+        <div>
+            <p className="text-sm text-gray-500 dark:text-gray-400">العنوان</p>
+            <p className="font-medium text-gray-900 dark:text-white">مصر، المنوفية</p>
+        </div>
+    </div>
+</div>
                         </section>
 
                         {/* ===== تواصل معنا ===== */}
