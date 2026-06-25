@@ -1,38 +1,22 @@
+
 "use client";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
-import { useAuth } from "@/components/providers/AuthProvider";
 import { ShoppingCart, Check } from "lucide-react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 
 export default function ProductCard({ product }) {
     const { addToCart, cart } = useCart();
-    const { isAuthenticated } = useAuth();
-    const router = useRouter();
 
     const productIsInCart = cart.some((item) => {
         const itemProductId = item.product?._id || item.product;
         return itemProductId?.toString() === product._id?.toString();
     });
 
-    // دالة معالجة الضغط على زر الإضافة
+    // ✅ إزالة شرط تسجيل الدخول - أي شخص يضيف للسلة مباشرة
     const handleAddToCart = (e) => {
         e.preventDefault();
         e.stopPropagation();
-
-        // التحقق من تسجيل الدخول
-        if (!isAuthenticated) {
-            // حفظ المنتج في sessionStorage عشان يرجع له بعد التسجيل
-            sessionStorage.setItem('redirectAfterLogin', window.location.pathname);
-            sessionStorage.setItem('productToAdd', JSON.stringify(product));
-
-            // توجيه المستخدم لتسجيل الدخول
-            router.push('/auth/login');
-            return;
-        }
-
-        // لو مسجل دخول، أضف المنتج للسلة
         addToCart(product);
     };
 
@@ -84,9 +68,7 @@ export default function ProductCard({ product }) {
                                 } 
                                 p-1.5 sm:p-2 rounded-lg transition-colors duration-200
                                 disabled:opacity-50 disabled:cursor-not-allowed
-                                relative group/btn
                             `}
-                            title={!isAuthenticated ? "يجب تسجيل الدخول أولاً" : ""}
                         >
                             {productIsInCart ? (
                                 <Check className="w-3 h-3 sm:w-4 sm:h-4" />
